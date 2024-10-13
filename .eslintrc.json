@@ -2,20 +2,19 @@
   "parser": "@typescript-eslint/parser",
   "plugins": ["react", "@typescript-eslint"],
   "extends": [
-    "next/core-web-vitals", 
+    "next/core-web-vitals",
     "next/typescript",
     "eslint:recommended",
     "plugin:react/recommended",
     "plugin:@typescript-eslint/recommended",
-    "plugin:prettier/recommended" // Use if you're also using Prettier
+    "plugin:prettier/recommended" // This disables conflicting ESLint rules
   ],
-  "rules":{
-    "prettier/prettier": "error",
+  "rules": {
     "@typescript-eslint/no-explicit-any": "warn",
     "react/react-in-jsx-scope": "off",
-    "quotes": ["error", "double"] // Enforce double quotes
+    "prettier/prettier": "error"
   },
-    // Specify the settings for React
+  // Specify the settings for React
   "settings": {
     "react": {
       "version": "detect" // Automatically pick the React version
