@@ -1,0 +1,73 @@
+name: oppas-website CI/CD
+
+# Trigger on pushes to the main branch and pull requests targeting the main branch
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+# Define jobs and runners
+jobs:
+  build:
+    # This job runs on the latest Ubuntu runner
+    runs-on: ubuntu-latest
+
+    # Define the steps for the job
+    steps:
+      # Step 1: Check out the code from the repository
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Step 2: Set up Node.js (specify the Node.js version)
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'  # Use the latest LTS Node.js version
+
+      # Step 3: Cache `node_modules` to speed up builds
+      - name: Cache node_modules
+        uses: actions/cache@v3
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      # Step 4: Install dependencies
+      - name: Install dependencies
+        run: npm install
+
+      # Step 5: Run linting (optional but recommended for code quality)
+      - name: Run lint
+        run: npm run lint
+
+      # Step 6: Run tests (make sure you have a test script in `package.json`)
+      - name: Run tests
+        run: npm test
+
+      # Step 7: Build the Next.js project
+      - name: Build project
+        run: npm run build
+
+  # Optional: Deploy step if you want to deploy to a platform like Vercel
+  # deploy:
+  #   runs-on: ubuntu-latest
+  #   needs: build  # Ensure this runs after the build step
+
+  #   steps:
+  #     - name: Checkout code
+  #       uses: actions/checkout@v3
+
+  #     - name: Set up Node.js
+  #       uses: actions/setup-node@v3
+  #       with:
+  #         node-version: '18'
+
+  #     # Authenticate with Vercel or other deployment platforms using secrets
+  #     - name: Deploy to Vercel
+  #       run: vercel --prod
+  #       env:
+  #         VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}  # Add your Vercel token in GitHub Secrets
