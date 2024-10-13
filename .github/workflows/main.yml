@@ -40,9 +40,9 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      # Step 5: Run linting (optional but recommended for code quality)
+      # Step 5: Run linting and formatting (optional but recommended for code quality)
       - name: Run lint
-        run: npm run lint
+        run: npm run lint-and-format
 
       # Step 6: Run tests (make sure you have a test script in `package.json`)
       - name: Run tests
